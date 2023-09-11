@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:40:03 by davidga2          #+#    #+#             */
-/*   Updated: 2023/07/27 14:03:16 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/12 01:46:48 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <fcntl.h>
 # include <stdarg.h>
 # include <limits.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <errno.h>
+# include <sys/errno.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
