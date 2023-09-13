@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:40:03 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/12 01:46:48 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/13 00:02:38 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,8 @@ t_list	*ft_lstcreate(size_t n);
 long	ft_atol(const char *str);
 void	ft_lstprint_long(t_list *lst, char *name);
 void	ft_putnbrlong_count(long n, int *ctr);
+
+// Pipex addons
+char	*ft_strdoublejoin(char *str1, char *str2, char *str3);
 
 #endif

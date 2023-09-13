@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 23:37:02 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/09 15:20:26 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:52:21 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	ft_error(char *msg);
 void	ft_infile_child(char **argv, char **envp, int *pipe_fd);
-void	ft_outfile_child(char **argv, char **binaries, char **envp);
+void	ft_outfile_child(char **argv, char **envp, int *pipe_fd);
 char	**ft_get_paths(char **envp);
 void	ft_pipex(char **argv, char **envp);
-void	ft_exec(char binaries, char **cmd, char **envp);
+void	ft_exec(char **argv, char **envp);
 
 // Función para reventar la ejecución. vicmarti dice que no está de acuerdo
 // al retornar el "errno". Con algo que no sea 0 le vale.
@@ -51,23 +51,31 @@ char **ft_get_paths(char **envp)
 // gestionar los errores.
 void	ft_exec(char **argv, char **envp)
 {
+	int		i;
 	char	**binaries;
 	char	**cmd;
+	char	*cmd_path;
 
+	i = 0;
 	binaries = ft_get_paths(envp);
-	cmd = argv[2];
+	cmd = ft_split(argv[3], ' ');
 	while (binaries[i])
 	{
 		if (access(binaries[i], F_OK) != -1)
 		{
-			//nesecitaria hacer un join que pasarle al acces X_OK
-			if (access(ft_strjoin(binaries[i], ft_strjoin("/", cmd[0])), F_OK) != -1)
-				execve(binaries[i], cmd, envp);
+			cmd_path = ft_strdoublejoin(binaries[i], "/", cmd[0]);
+			if (!cmd_path)
+				ft_error("Double join failed");
+			if (access(cmd_path, X_OK) != -1)
+			{
+				printf("this is the path:%s\n", cmd_path);
+				if (execve(cmd_path, cmd, envp) == -1)
+					ft_error("Command execution failed.");
+			}
 		}
-		else
-			ft_error("No se pudo acceder a los directorios binarios");
 		i++;
 	}
+	ft_error("No se pudo acceder a los directorios binarios");
 }
 
 // El hijo del final ha de cerrar el pipe entero. Por lo que debe hacer 3 "close()".
@@ -90,10 +98,21 @@ void	ft_outfile_child(char **argv, char **envp, int *pipe_fd)
 			ft_error("Outfile fd creation or dup2 failed");
 		if (close(pipe_fd[0]) == -1 || close(outfile_fd) == -1)
 			ft_error("Some fd close failed in the output child proccess");
-		if (ft_exec(argv, envp) == -1)
-			ft_error("Nothing executed");
+		ft_exec(argv, envp);
 	}
 
+}
+
+// Función sugerida por samusanc para gestionar la falla de la creación del
+// hijo en la ejecución de la inicialización de la variabe que alberga el pid.
+int fork_error(void)
+{
+	int i;
+
+	i = fork();
+	if (i == -1)
+		ft_error("Infile child pid creation proccess failed");
+	return (i);
 }
 
 // El infile_child creo que está bien. Input.
@@ -102,9 +121,7 @@ void	ft_infile_child(char **argv, char **envp, int *pipe_fd)
 	int		infile_fd;
 	pid_t	child_pid;
 
-	child_pid = fork();
-	if (child_pid == -1)
-		ft_error("Infile child pid creation proccess failed");
+	child_pid = fork_error();
 	if (child_pid == 0)
 	{
 		if (close(pipe_fd[0]) == -1)
@@ -113,13 +130,11 @@ void	ft_infile_child(char **argv, char **envp, int *pipe_fd)
 		if (infile_fd == -1 || dup2(infile_fd, STDIN_FILENO) == -1
 			|| dup2(pipe_fd[1], STDOUT_FILENO == -1))
 			ft_error("Infile fd creation or dup2 failed");
-		if (close(infile_fd) == -1 || close(pipe_int[1]) == -1)
+		if (close(infile_fd) == -1 || close(pipe_fd[1]) == -1)
 			ft_error("Some fd close failed in the infile child proccess");
-		if (ft_exec(argv, envp) == -1)
-			ft_error("Nothing executed");
+		ft_exec(argv, envp);
 	}
-	// el padre tiene que esperar con waitpid a este hijo?
-	// close (pipe_fd[1]);
+//	close (pipe_fd[1]);
 }
 
 // En construcción. Equivale al padre.
@@ -131,7 +146,7 @@ void ft_pipex(char **argv, char **envp)
 		ft_error("La vinculación de fd en la creación del pipe ha fallado");
 	ft_infile_child(argv, envp, pipe_fd);
 	ft_outfile_child(argv, envp, pipe_fd);
-	if (close(pipe_fd[0]) == -1 || close(pipe_fd[1] == -1))
+	if (close(pipe_fd[0]) == -1 || close(pipe_fd[1]) == -1)
 		ft_error("Parent cant close some pipe_fd");
 	waitpid(-1, NULL, 0);
 	waitpid(-1, NULL, 0);
