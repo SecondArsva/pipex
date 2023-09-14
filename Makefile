@@ -6,13 +6,15 @@
 #    By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/31 17:34:05 by davidga2          #+#    #+#              #
-#    Updated: 2023/09/05 22:47:36 by davidga2         ###   ########.fr        #
+#    Updated: 2023/09/14 20:34:26 by davidga2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-SRC = src/pipex.c
+SRC = src/pipex.c		\
+	  src/childs.c		\
+	  src/ft_error.c	
 
 OBJS = $(SRC:%.c=%.o)
 
