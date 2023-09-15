@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 23:37:02 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/14 20:34:46 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/15 05:05:36 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,12 @@ void ft_pipex(char **argv, char **envp)
 		ft_error("La vinculación de fd en la creación del pipe ha fallado");
 	ft_infile_child(argv, envp, pipe_fd);
 	ft_outfile_child(argv, envp, pipe_fd);
-	if (close(pipe_fd[0]) == -1 || close(pipe_fd[1]) == -1)
-		ft_error("Parent cant close some pipe_fd");
+	ft_printf("pipe_fd[0]: %i\npipe_fd[1]: %i\n", pipe_fd[0], pipe_fd[1]);
+	// hay un hijo que no muere cuando debe, ejecutando esto una segunda vez.
+	if (close(pipe_fd[0]) == -1)
+		ft_error("Parent cant close pipe_fd[0]");
+	if (close(pipe_fd[1]) == -1)
+		ft_error("Parent cant close pipe_fd[1]");
 	waitpid(-1, NULL, 0);
 	waitpid(-1, NULL, 0);
 }
