@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:57:14 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/15 03:22:39 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/16 22:52:13 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ void	ft_outfile_child(char **argv, char **envp, int *pipe_fd);
 char	**ft_get_paths(char **envp);
 void	ft_pipex(char **argv, char **envp);
 void	ft_exec(char *argv, char **envp);
+
 
 #endif
