@@ -6,7 +6,7 @@
 #    By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/31 17:34:05 by davidga2          #+#    #+#              #
-#    Updated: 2023/09/15 03:20:33 by davidga2         ###   ########.fr        #
+#    Updated: 2023/09/17 22:36:53 by davidga2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,12 +38,12 @@ $(LIBFT):
 
 clean:
 	$(RM) $(OBJS)
-	make clean -C $(LIBFT_DIR)
+	$(MAKE) clean -C $(LIBFT_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
-	make fclean -C $(LIBFT_DIR)
+	$(MAKE) fclean -C $(LIBFT_DIR)
 
-re: clean fclean
+re: fclean all
 
 .PHONY: all clean fclean re
