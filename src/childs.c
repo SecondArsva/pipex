@@ -6,34 +6,31 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:24:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/17 19:16:18 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/22 04:48:07 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-// Función sugerida por samusanc para gestionar la falla de la creación del
-// hijo en la ejecución de la inicialización de la variabe que alberga el pid.
-int fork_error(void)
+// Function suggested by samusanc to manage the possible failure of the
+// creation of the child in the execution of the initialization of the
+// variable that houses the pid.
+int	fork_manage(void)
 {
-	int i;
+	pid_t	pid;
 
-	i = fork();
-	if (i == -1)
+	pid = fork();
+	if (pid == -1)
 		ft_error("Infile child pid creation proccess failed");
-	return (i);
+	return (pid);
 }
 
-// El hijo del final ha de cerrar el pipe entero. Por lo que debe hacer 3 "close()".
-// Output.
 void	ft_outfile_child(char **argv, char **envp, int *pipe_fd)
 {
 	int		outfile_fd;
 	pid_t	child_pid;
 
-	child_pid = fork();
-	if (child_pid == -1)
-		ft_error("Outfile child pid creation proccess failed");
+	child_pid = fork_manage();
 	if (child_pid == 0)
 	{
 		if (close(pipe_fd[1]) == -1)
@@ -46,22 +43,19 @@ void	ft_outfile_child(char **argv, char **envp, int *pipe_fd)
 			ft_error("Some fd close failed in the output child proccess");
 		ft_exec(argv[3], envp);
 	}
-
 }
 
-// El infile_child creo que está bien. Subproceso input.
 void	ft_infile_child(char **argv, char **envp, int *pipe_fd)
 {
 	int		infile_fd;
 	pid_t	child_pid;
 
-	child_pid = fork_error();
+	child_pid = fork_manage();
 	if (child_pid == 0)
 	{
 		if (close(pipe_fd[0]) == -1)
 			ft_error("Input child failed closing the read fd pipe");
 		infile_fd = open(argv[1], O_RDONLY);
-		//ft_printf("dune: %i\n", infile_fd);
 		if (infile_fd == -1 || dup2(infile_fd, STDIN_FILENO) == -1
 			|| dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 			ft_error("Infile fd creation or dup2 failed");
