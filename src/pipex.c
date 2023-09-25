@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 23:37:02 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/22 01:43:15 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:21:40 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 5)
 		ft_pipex(argv, envp);
 	else
+	{
+		ft_printf_error("pipex: invalid arguments\n");
 		return (1);
+	}
 	return (0);
 }

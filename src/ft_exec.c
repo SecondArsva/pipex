@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 03:05:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/22 06:15:34 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:24:54 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	**ft_get_paths(char **envp)
 		i++;
 	if (!envp[i])
 		ft_error("PATH dont exits in the enviroment");
-	matrix = ft_split(&envp[i][4], ':');
+	matrix = ft_split(&envp[i][5], ':');
 	if (!matrix)
 		ft_error("Binaries matrix reserve failed");
 	return (matrix);
