@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 03:05:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/25 19:24:54 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:57:35 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_get_correct_binary_path(char *cmd, char **envp)
 		if (!correct_path)
 			ft_error("Double join failed");
 		if (access(correct_path, X_OK) == 0)
-			return (correct_path);
+			return (ft_free_matrix(binaries), correct_path);
 		i++;
 	}
 	ft_cmd_error("Command not found");
