@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:24:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/26 15:53:30 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/27 02:45:42 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,14 @@ int	ft_fork_manage(void)
 	return (pid);
 }
 
-void	ft_outfile_child(char **argv, char **envp, int *pipe_fd)
+int	ft_pipe_manage(int *pipe_a_fd, int *pipe_b_fd)
+{
+	
+
+	return ();
+}
+
+void	ft_outfile_child(char *cmd_argv, char **envp, int *pipe_fd)
 {
 	int		outfile_fd;
 	pid_t	child_pid;
@@ -41,18 +48,25 @@ void	ft_outfile_child(char **argv, char **envp, int *pipe_fd)
 			ft_error("Outfile fd creation or dup2 failed");
 		if (close(pipe_fd[0]) == -1 || close(outfile_fd) == -1)
 			ft_error("Some fd close failed in the output child proccess");
-		ft_exec(argv[3], envp);
+		ft_exec(cmd_argv, envp);
 	}
 }
 
-void	ft_middle_child()
+void	ft_middle_child(char *cmd_argv, char **envp, int *a_fd, int *b_fd)
 {
 	pid_t	child_pid;
 
 	child_pid = ft_fork_manage();
 	if (child_pid = 0)
 	{
-	
+		if (close(a_fd[1]) == -1 || close(b_fd[0]) == -1)
+			ft_error("A middle child failed closing unused pipe fds");
+		if (dup2(a_fd[0], STDIN_FILENO) == -1
+			|| dup2(b_fd[1], STDOUT_FILENO) == -1)
+			ft_error("A middle child failed in a dup2");
+		if (close(a_fd[0]) == -1 || close(b_fd[1]) == -1)
+			ft_error("A middle child failed closing pipe fds post dups2");
+		exec(cmd_argv, envp);
 	}
 }
 
