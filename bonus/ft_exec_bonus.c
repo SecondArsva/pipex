@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec_bonus.c                                    :+:      :+:    :+:   */
+/*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 03:05:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/28 22:30:06 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:24:54 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../includes/pipex.h"
 
 // If the argument corresponding to a command does not contain a path,
 // the path will be taken from the binary directories housed in the PATH
@@ -68,7 +68,7 @@ char	*ft_get_correct_binary_path(char *cmd, char **envp)
 		if (!correct_path)
 			ft_error("Double join failed");
 		if (access(correct_path, X_OK) == 0)
-			return (ft_free_matrix(binaries), correct_path);
+			return (correct_path);
 		i++;
 	}
 	ft_cmd_error("Command not found");
