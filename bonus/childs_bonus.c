@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:24:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/28 20:35:10 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/09/29 08:13:16 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	ft_outfile_child_b(char **argv, int cmd_argv, char **envp, int *pipe_fd)
 	child_pid = ft_fork_manage();
 	if (child_pid == 0)
 	{
+		outfile_fd = open(argv[cmd_argv + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (close(pipe_fd[1]) == -1)
 			ft_error("Output child failed closing the write fd pipe");
-		outfile_fd = open(argv[cmd_argv + 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (outfile_fd == -1 || dup2(pipe_fd[0], STDIN_FILENO) == -1
 			|| dup2(outfile_fd, STDOUT_FILENO) == -1)
 			ft_error("Outfile fd creation or dup2 failed");
