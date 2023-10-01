@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 23:37:02 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/29 08:13:14 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/10/01 06:37:55 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,19 @@ void	ft_pipex(char **argv, char **envp, int total_childs, int middle_childs)
 		ft_printf_error("new a[1]: %i\nnew a[0]: %i\n", pipe_a_fd[1], pipe_a_fd[0]);///////////////
 		//close(pipe_b_fd[1]);
 		//close(pipe_b_fd[0]);
-		ft_printf_error("----------------\n");
+		ft_printf_error("---------------------\n");
 	}
+	ft_printf_error("[Pre LC]\nnew a[1]: %i\nnew a[0]: %i\n", pipe_a_fd[1], pipe_a_fd[0]);///////////////
 	ft_outfile_child_b(argv, cmd_count, envp, pipe_a_fd);
 	if (close(pipe_a_fd[0]) == -1)
 	{
 		ft_printf_error("[P] pipe_a_0: %i\n", pipe_a_fd[0]);/////////
-		ft_error("Parent cant close pipe_fd[0]");
+		//ft_error("Parent cant close pipe_fd[0]");
 	}
 	if (close(pipe_a_fd[1]) == -1)
 	{
 		ft_printf_error("[P] pipe_a_1: %i\n", pipe_a_fd[1]);/////////
-		ft_error("Parent cant close pipe_fd[1]");
+		//ft_error("Parent cant close pipe_fd[1]");
 	}
 	ft_wait_childs(total_childs);
 }
