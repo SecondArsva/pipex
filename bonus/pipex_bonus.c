@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 23:37:02 by davidga2          #+#    #+#             */
-/*   Updated: 2023/10/04 05:27:01 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:11:22 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ void	ft_pipex(char **argv, char **envp, int total_childs, int middle_childs)
 			ft_error("fds linking at pipe creation has failed");
 		
 		ft_middle_child(argv[cmd_count], envp, left, right);
+		close(left[0]);
+		close(left[1]);
 		middle_childs--;
 		cmd_count++;
-
+		left[0] = right[0];
+		left[1] = right[1];
 		ft_printf_error("---------------------\n");
 	}
 	ft_outfile_child_b(argv, cmd_count, envp, left);
