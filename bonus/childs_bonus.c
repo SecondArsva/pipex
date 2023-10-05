@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:24:27 by davidga2          #+#    #+#             */
-/*   Updated: 2023/10/04 05:27:03 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/10/05 03:06:29 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,15 @@ int	ft_fork_manage(void)
 	return (pid);
 }
 
-void	ft_outfile_child_b(char **argv, int cmd_argv, char **envp, int *pipe_fd)
+void	ft_outfile_child_b(char **argv, int cmd, char **envp, int *pipe_fd)
 {
 	int		outfile_fd;
 	pid_t	child_pid;
 
-
-	ft_printf_error("[into LC] <---\na[0]: %i\na[1]: %i\n", pipe_fd[0], pipe_fd[1]);
 	child_pid = ft_fork_manage();
 	if (child_pid == 0)
 	{
-		outfile_fd = open(argv[cmd_argv + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		outfile_fd = open(argv[cmd + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (close(pipe_fd[1]) == -1)
 			ft_error("Output child failed closing the write fd pipe");
 		if (outfile_fd == -1 || dup2(pipe_fd[0], STDIN_FILENO) == -1
@@ -43,9 +41,8 @@ void	ft_outfile_child_b(char **argv, int cmd_argv, char **envp, int *pipe_fd)
 			ft_error("Outfile fd creation or dup2 failed");
 		if (close(pipe_fd[0]) == -1 || close(outfile_fd) == -1)
 			ft_error("Some fd close failed in the output child proccess");
-		ft_exec(argv[cmd_argv], envp);
+		ft_exec(argv[cmd], envp);
 	}
-	ft_printf_error("[out LC] --->\n");
 }
 
 void	ft_middle_child(char *cmd_argv, char **envp, int *left, int *right)
@@ -55,19 +52,11 @@ void	ft_middle_child(char *cmd_argv, char **envp, int *left, int *right)
 	child_pid = ft_fork_manage();
 	if (child_pid == 0)
 	{
-	/*	close(left[1]);
-		close(right[0]);
-		dup2(left[0], STDIN_FILENO);
-		dup2(right[1], STDOUT_FILENO);
-		close(left[0]);
-		close(right[1]);*/
-
-
 		if (close(left[1]) == -1)
 			ft_error("A Middle child failed closing unused L1 fd");
 		if (close(right[0]) == -1)
 			ft_error("A Middle child failed closing unused R0 fd");
-		if (dup2(left[0], STDIN_FILENO) == -1) 
+		if (dup2(left[0], STDIN_FILENO) == -1)
 			ft_error("A Middle child failed in L0 dup2");
 		if (dup2(right[1], STDOUT_FILENO) == -1)
 			ft_error("A Middle child failed in R1 dup2");
@@ -77,7 +66,6 @@ void	ft_middle_child(char *cmd_argv, char **envp, int *left, int *right)
 			ft_error("A Middle child failed closing R1 fd post dups2");
 		ft_exec(cmd_argv, envp);
 	}
-	ft_printf_error("[out MC] --->\n");
 }
 
 void	ft_infile_child(char **argv, char **envp, int *pipe_fd)
