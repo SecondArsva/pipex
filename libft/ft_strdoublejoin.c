@@ -6,7 +6,7 @@
 /*   By: davidga2 <davidga2@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 22:56:25 by davidga2          #+#    #+#             */
-/*   Updated: 2023/09/13 00:10:22 by davidga2         ###   ########.fr       */
+/*   Updated: 2023/10/09 20:29:39 by davidga2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ char	*ft_strdoublejoin(char *str1, char *str2, char *str3)
 		return (0);
 	}
 	free(join);
-	free(doublejoin);
 	return (doublejoin);
 }
 /*
